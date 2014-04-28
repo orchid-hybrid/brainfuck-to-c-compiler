@@ -1,4 +1,98 @@
-brainfuck-to-c-compiler
+Brainfuck to C compiler
 =======================
 
-self hosting brainfuck to c compiler
+$ ls -l
+ 42319  bf
+  2315 bf2c.bf
+   107 hello.bf
+ 11452 mandel.bf
+   934 quine.bf
+$ cat bf2c.bf
+--[------->++<]>-.[->+++<]>.+++++.-----------.+++++++++.+++++++++.+[->+++<]>++.+.--[--->+<]>-.--[->++<]>.--[->++<]>-.+.++[->+++<]>++.+++++.++++++.[->+++++<]>+++.+[--->+<]>+++.++[->+++<]>.>++++++++++.-[->++++<]>-.[->+++<]>.+++++.-----------.+++++++++.+++++++++.+[->+++<]>++.+.--[--->+<]>-.--[->++<]>.--[->++<]>-.+.++[->+++<]>++.+++++.+++++.++++++.[++>---<]>.+[--->+<]>+++.++[->+++<]>.>++++++++++.[--------->++<]>+.------------.+++++.++++++.[-->+<]>--.+[--->+++++<]>.[--->+<]>-.[---->+<]>+++.[->+++<]>+.------.+[-->+<]>+++.-.++.++.[------>+<]>-.[--->++<]>-.[->++<]>+.-[-->+++++<]>-.>--[-->+++<]>.-[++>---<]>+.[->++<]>-.------------.+++++.++++++.[-->+<]>--.+[--->+++++<]>.[--->+<]>-.--[++>---<]>-.--[--->++<]>.[-->+<]>+++++.+++[-->+++<]>+.+[------>+<]>.----[->++<]>-.------------.++++++++.+++++.++[++>---<]>.+.[->+++<]>.--------.++++[->+++<]>.[--->+<]>---.++[->+++<]>.[--->+<]>-.++[->+++<]>+.---[->+++<]>-.--[->+++<]>+.+.++[->+++<]>++.+++++++++++.++++++.-.[++>---<]>--.-----[->++<]>.+++++++.---------..[-->+<]>+++.-[-->+++<]>-.>+[>[-],>[-]+>[-]+>[-]+>[-]+>[-]+>[-]+>[-]+>[-]+>[-]+<<<<<<<<<----------[>-<---------------------------------[>>-<<-[>>>-<<<-[>>>>-<<<<-[>>>>>-<<<<<--------------[>>>>>>-<<<<<<--[>>>>>>>-<<<<<<<-----------------------------[>>>>>>>>-<<<<<<<<--[>>>>>>>>>-<<<<<<<<<[-]]]]]]]]]]>[<<->>>>>>>>>>><[-]<[-]<[-]<[-]<[-]<[-]<[-]<[-]<[-]]<>>[>>>>>>>>++[------>+<]>..-.--[--->++<]>.[-->+<]>+++.<<<<[-]<[-]<[-]<[-]<[-]<[-]<[-]<[-]]<<>>>[>>>>>>>++[------>+<]>-.--[--->++<]>.[-->+<]>+++++.--[--->+<]>--.--.[--->+<]>---.++[->+++<]>+.+++++.-------.--[--->+<]>---.[--->+<]>++.+.-[-->+++<]>-.<<<<<<<<<<[-]<[-]<[-]<[-]<[-]<[-]<[-]]<<<>>>>[>>>>>>++[------>+<]>++..---.--[--->++<]>.[-->+<]>+++.<<<<[-]<[-]<[-]<[-]<[-]<[-]]<<<<>>>>>[>>>>>+[------->++<]>++.+++++.-.++[->+++<]>+.+++++.-------.--[--->+<]>---.[--->+<]>++.++.--[--->++<]>.[++>---<]>+.-[-->+++<]>-.<<<<<<<<[-]<[-]<[-]<[-]<[-]]<<<<<>>>>>>[>>>>++[------>+<]>++..--[----->+<]>+.[-->+<]>+++.<<<<[-]<[-]<[-]<[-]]<<<<<<>>>>>>>[>>>++[------>+<]>..[----->+<]>+.[-->+<]>+++.<<<<[-]<[-]<[-]]<<<<<<<>>>>>>>>[>>------[-->+++<]>.+[->+++<]>.+.+++.-------.--[->+++<]>-.++.--[--->++<]>.[++>---<]>+.[->+++<]>.<<<<<<<[-]<[-]]<<<<<<<<>>>>>>>>>[>--[-->+++<]>.<<[-]]<<<<<<<<<>>>>>>>>>>[-]>[-]>[-]>[-]>[-]>[-]>[-]>[-]>[-]>[-]><<<<<<<<<<<<<<<<<<<<<]--[-->+++<]>.>++++++++++.
+
+
+Self Hosting
+============
+
+$ ./bf < bf2c.bf > bf.c
+$ rm bf
+$ gcc bf.c -o bf
+$ ./bf < bf2c.bf > bf2.c
+$ diff bf.c bf2.c 
+$ 
+
+
+Runs Hello World
+================
+
+$ cat hello.bf
+++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.
+$ ./bf < hello.bf > hello.c
+$ gcc hello.c && ./a.out
+Hello World!
+
+
+Runs Quine.. almost (newline issue)
+===================================
+
+$ ./bf < quine.bf > quine.c
+$ gcc quine.c && ./a.out > quine.txt
+$ echo >> quine.txt
+$ diff quine.bf quine.txt 
+$
+
+
+Runs Fractal
+============
+
+$ ./bf < mandel.bf > mandel.c
+$ gcc mandel.c && ./a.out
+AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDEGFFEEEEDDDDDDCCCCCCCCCBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+AAAAAAAAAAAAAAABBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDEEEFGIIGFFEEEDDDDDDDDCCCCCCCCCBBBBBBBBBBBBBBBBBBBBBBBBBB
+AAAAAAAAAAAAABBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDEEEEFFFI KHGGGHGEDDDDDDDDDCCCCCCCCCBBBBBBBBBBBBBBBBBBBBBBB
+AAAAAAAAAAAABBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDEEEEEFFGHIMTKLZOGFEEDDDDDDDDDCCCCCCCCCBBBBBBBBBBBBBBBBBBBBB
+AAAAAAAAAAABBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDEEEEEEFGGHHIKPPKIHGFFEEEDDDDDDDDDCCCCCCCCCCBBBBBBBBBBBBBBBBBB
+AAAAAAAAAABBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDEEEEEEFFGHIJKS  X KHHGFEEEEEDDDDDDDDDCCCCCCCCCCBBBBBBBBBBBBBBBB
+AAAAAAAAABBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDEEEEEEFFGQPUVOTY   ZQL[MHFEEEEEEEDDDDDDDCCCCCCCCCCCBBBBBBBBBBBBBB
+AAAAAAAABBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDEEEEEFFFFFGGHJLZ         UKHGFFEEEEEEEEDDDDDCCCCCCCCCCCCBBBBBBBBBBBB
+AAAAAAABBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDEEEEFFFFFFGGGGHIKP           KHHGGFFFFEEEEEEDDDDDCCCCCCCCCCCBBBBBBBBBBB
+AAAAAAABBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDEEEEEFGGHIIHHHHHIIIJKMR        VMKJIHHHGFFFFFFGSGEDDDDCCCCCCCCCCCCBBBBBBBBB
+AAAAAABBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDEEEEEEFFGHK   MKJIJO  N R  X      YUSR PLV LHHHGGHIOJGFEDDDCCCCCCCCCCCCBBBBBBBB
+AAAAABBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDEEEEEEEEEFFFFGH O    TN S                       NKJKR LLQMNHEEDDDCCCCCCCCCCCCBBBBBBB
+AAAAABBCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDEEEEEEEEEEEEFFFFFGHHIN                                 Q     UMWGEEEDDDCCCCCCCCCCCCBBBBBB
+AAAABBCCCCCCCCCCCCCCCCCCCCCCCCCDDDDEEEEEEEEEEEEEEEFFFFFFGHIJKLOT                                     [JGFFEEEDDCCCCCCCCCCCCCBBBBB
+AAAABCCCCCCCCCCCCCCCCCCCCCCDDDDEEEEEEEEEEEEEEEEFFFFFFGGHYV RQU                                     QMJHGGFEEEDDDCCCCCCCCCCCCCBBBB
+AAABCCCCCCCCCCCCCCCCCDDDDDDDEEFJIHFFFFFFFFFFFFFFGGGGGGHIJN                                            JHHGFEEDDDDCCCCCCCCCCCCCBBB
+AAABCCCCCCCCCCCDDDDDDDDDDEEEEFFHLKHHGGGGHHMJHGGGGGGHHHIKRR                                           UQ L HFEDDDDCCCCCCCCCCCCCCBB
+AABCCCCCCCCDDDDDDDDDDDEEEEEEFFFHKQMRKNJIJLVS JJKIIIIIIJLR                                               YNHFEDDDDDCCCCCCCCCCCCCBB
+AABCCCCCDDDDDDDDDDDDEEEEEEEFFGGHIJKOU  O O   PR LLJJJKL                                                OIHFFEDDDDDCCCCCCCCCCCCCCB
+AACCCDDDDDDDDDDDDDEEEEEEEEEFGGGHIJMR              RMLMN                                                 NTFEEDDDDDDCCCCCCCCCCCCCB
+AACCDDDDDDDDDDDDEEEEEEEEEFGGGHHKONSZ                QPR                                                NJGFEEDDDDDDCCCCCCCCCCCCCC
+ABCDDDDDDDDDDDEEEEEFFFFFGIPJIIJKMQ                   VX                                                 HFFEEDDDDDDCCCCCCCCCCCCCC
+ACDDDDDDDDDDEFFFFFFFGGGGHIKZOOPPS                                                                      HGFEEEDDDDDDCCCCCCCCCCCCCC
+ADEEEEFFFGHIGGGGGGHHHHIJJLNY                                                                        TJHGFFEEEDDDDDDDCCCCCCCCCCCCC
+A                                                                                                 PLJHGGFFEEEDDDDDDDCCCCCCCCCCCCC
+ADEEEEFFFGHIGGGGGGHHHHIJJLNY                                                                        TJHGFFEEEDDDDDDDCCCCCCCCCCCCC
+ACDDDDDDDDDDEFFFFFFFGGGGHIKZOOPPS                                                                      HGFEEEDDDDDDCCCCCCCCCCCCCC
+ABCDDDDDDDDDDDEEEEEFFFFFGIPJIIJKMQ                   VX                                                 HFFEEDDDDDDCCCCCCCCCCCCCC
+AACCDDDDDDDDDDDDEEEEEEEEEFGGGHHKONSZ                QPR                                                NJGFEEDDDDDDCCCCCCCCCCCCCC
+AACCCDDDDDDDDDDDDDEEEEEEEEEFGGGHIJMR              RMLMN                                                 NTFEEDDDDDDCCCCCCCCCCCCCB
+AABCCCCCDDDDDDDDDDDDEEEEEEEFFGGHIJKOU  O O   PR LLJJJKL                                                OIHFFEDDDDDCCCCCCCCCCCCCCB
+AABCCCCCCCCDDDDDDDDDDDEEEEEEFFFHKQMRKNJIJLVS JJKIIIIIIJLR                                               YNHFEDDDDDCCCCCCCCCCCCCBB
+AAABCCCCCCCCCCCDDDDDDDDDDEEEEFFHLKHHGGGGHHMJHGGGGGGHHHIKRR                                           UQ L HFEDDDDCCCCCCCCCCCCCCBB
+AAABCCCCCCCCCCCCCCCCCDDDDDDDEEFJIHFFFFFFFFFFFFFFGGGGGGHIJN                                            JHHGFEEDDDDCCCCCCCCCCCCCBBB
+AAAABCCCCCCCCCCCCCCCCCCCCCCDDDDEEEEEEEEEEEEEEEEFFFFFFGGHYV RQU                                     QMJHGGFEEEDDDCCCCCCCCCCCCCBBBB
+AAAABBCCCCCCCCCCCCCCCCCCCCCCCCCDDDDEEEEEEEEEEEEEEEFFFFFFGHIJKLOT                                     [JGFFEEEDDCCCCCCCCCCCCCBBBBB
+AAAAABBCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDEEEEEEEEEEEEFFFFFGHHIN                                 Q     UMWGEEEDDDCCCCCCCCCCCCBBBBBB
+AAAAABBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDEEEEEEEEEFFFFGH O    TN S                       NKJKR LLQMNHEEDDDCCCCCCCCCCCCBBBBBBB
+AAAAAABBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDEEEEEEFFGHK   MKJIJO  N R  X      YUSR PLV LHHHGGHIOJGFEDDDCCCCCCCCCCCCBBBBBBBB
+AAAAAAABBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDEEEEEFGGHIIHHHHHIIIJKMR        VMKJIHHHGFFFFFFGSGEDDDDCCCCCCCCCCCCBBBBBBBBB
+AAAAAAABBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDEEEEFFFFFFGGGGHIKP           KHHGGFFFFEEEEEEDDDDDCCCCCCCCCCCBBBBBBBBBBB
+AAAAAAAABBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDEEEEEFFFFFGGHJLZ         UKHGFFEEEEEEEEDDDDDCCCCCCCCCCCCBBBBBBBBBBBB
+AAAAAAAAABBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDEEEEEEFFGQPUVOTY   ZQL[MHFEEEEEEEDDDDDDDCCCCCCCCCCCBBBBBBBBBBBBBB
+AAAAAAAAAABBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDEEEEEEFFGHIJKS  X KHHGFEEEEEDDDDDDDDDCCCCCCCCCCBBBBBBBBBBBBBBBB
+AAAAAAAAAAABBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDEEEEEEFGGHHIKPPKIHGFFEEEDDDDDDDDDCCCCCCCCCCBBBBBBBBBBBBBBBBBB
+AAAAAAAAAAAABBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDDDEEEEEFFGHIMTKLZOGFEEDDDDDDDDDCCCCCCCCCBBBBBBBBBBBBBBBBBBBBB
+AAAAAAAAAAAAABBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDDDEEEEFFFI KHGGGHGEDDDDDDDDDCCCCCCCCCBBBBBBBBBBBBBBBBBBBBBBB
+AAAAAAAAAAAAAAABBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCDDDDDDDDDDEEEFGIIGFFEEEDDDDDDDDCCCCCCCCCBBBBBBBBBBBBBBBBBBBBBBBBBB
+
